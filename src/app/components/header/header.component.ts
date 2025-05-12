@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { AuthStateService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +10,16 @@ import { Component, Input } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  @Input() isLoggedIn: boolean = false;
-  @Input() username: string = '';
+  constructor(public authState: AuthStateService, private router: Router) { }
+
+  // Método para navegar al login
+  navigateToLogin() {
+    console.log('Navigating to login');
+    this.router.navigate(['/login']);
+  }
+
+  logout(){
+    this.authState.logout();
+  }
 
 }
