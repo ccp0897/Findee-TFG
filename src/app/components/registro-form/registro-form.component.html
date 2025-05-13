@@ -1,0 +1,92 @@
+<div class="min-h-screen flex flex-col items-center justify-center px-4 bg-background-alt-2">
+  <div class="bg-white shadow-2xl shadow-sombra rounded-xl p-8 max-w-lg w-full space-y-5 relative">
+    <!-- Flecha de regreso (nuevo elemento) -->
+    <button 
+      routerLink="/"
+      class="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-100 transition-colors duration-300 cursor-pointer"
+      aria-label="Volver al inicio"
+    >
+      <img src="/icons/return.svg" alt="Volver" class="h-6 w-6"> 
+    </button>
+      
+    <!-- Logo -->
+    <div class="flex justify-center">
+      <img src="images/logoFooter.svg" alt="Findeelogo" class="h-16 sm:h-20 w-auto" />
+    </div>
+
+    <!-- Título -->
+    <h1 class="mt-2 text-center text-xl lg:text-4xl font-semibold text-black font-roboto">Registrarse</h1>
+
+    <!-- Formulario -->
+    <form (ngSubmit)="onSubmit()" [formGroup]="registroForm" class="space-y-4">
+
+      <!-- Nombre -->
+      <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
+        <img src="icons/user.svg" alt="Nombre de usuario" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
+        <input type="text" placeholder="Nombre de usuario" formControlName="nombre" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+      </div>
+
+      <!-- Correo -->
+      <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
+        <img src="icons/mailColor.svg" alt="Correo Electronico" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
+        <input type="email" placeholder="Correo" formControlName="correo" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+      </div>
+
+      <!-- Contraseña -->
+      <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
+        <img src="icons/password.svg" alt="Contraseña" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
+        <input type="password" placeholder="Contraseña" formControlName="password" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+      </div>
+
+      <!-- Confirmar Contraseña -->
+      <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
+        <img src="icons/confirm.svg" alt="Confirmar Contraseña" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
+        <input type="password" placeholder="Confirmar Contraseña" formControlName="confirmarPassword" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+      </div>
+
+      <!-- Descripción Personal -->
+      <div class="border rounded px-3 py-2 w-11/12 mx-auto">
+        <label class="text-tertiary flex items-center mb-1 font-poppins">
+          <img src="icons/descripcion.svg" alt="Descripción personal" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8"> Descripción personal
+        </label>
+        <textarea formControlName="descripcion" rows="3" placeholder="Cuéntanos un poco sobre ti, tu experiencia o qué tipo de trabajo buscas..." class="w-full outline-none sm:text-sm text-xs lg:text-base font-poppins text-black placeholder:text-gray-400"></textarea>
+      </div>
+
+      <!-- Habilidades -->
+      <div class="border rounded px-3 py-2 w-11/12 mx-auto">
+        <label class="text-tertiary font-poppins flex items-center mb-2">
+          <img src="icons/habilidades.svg" alt="Habilidades" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8"> Habilidades
+        </label>
+        <div class="flex flex-wrap gap-2 mb-2">
+          <span *ngFor="let skill of habilidades" class="bg-gray-200 px-2 py-1 rounded-full text-sm">
+            {{ skill }} <button type="button" (click)="eliminarHabilidad(skill)" class="hover:scale-75 cursor-pointer">×</button>
+          </span>
+        </div>
+        <div class="flex items-center gap-2">
+          <input formControlName="nuevaHabilidad" placeholder="Ej: Angular" class="flex-1 border rounded px-2 py-1 outline-none text-sm placeholder:text-gray-400" />
+          <button type="button" (click)="agregarHabilidad()" class="text-sm font-semibold hover:underline cursor-pointer">+ Añadir</button>
+        </div>
+      </div>
+
+      <!-- CV (PDF) -->
+      <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
+        <img src="icons/pdfFile.svg" alt="Agregar CV" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
+        <input type="file" accept="application/pdf" (change)="onFileSelected($event)" class="w-full text-sm text-gray-600" />
+      </div>
+
+      <!-- Botón registrarse -->
+       <div class="flex justify-center">
+         <button type="submit" class="w-3/4 bg-primary hover:bg-secondary text-white font-bold py-2 rounded-md transition-all duration-300 transform hover:scale-[1.01] lg:text-3xl font-roboto cursor-pointer" (click)="onSubmit()">
+           Registrarse
+         </button>
+       </div>
+    </form>
+
+    <!-- Ya tienes cuenta -->
+    <p class="text-center text-base text-black mt-2 font-poppins">
+      ¿Ya tienes cuenta?
+      <a routerLink="/login" class="text-tertiary cursor-pointer hover:text-primary">Iniciar sesión</a>
+    </p>
+  </div>
+</div>
+
