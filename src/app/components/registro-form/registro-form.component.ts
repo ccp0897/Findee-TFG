@@ -17,11 +17,11 @@ export class RegistroFormComponent {
   cvFile: File | null = null;
   
 
-  constructor(private formBuilder: FormBuilder, private router: Router, public authState: AuthStateService) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private authState: AuthStateService) {
     this.registroForm = this.formBuilder.group({
       nombre: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      email: ['', [Validators.required, Validators.email]],
+      contrasena: ['', [Validators.required, Validators.minLength(6)]],
       confirmarPassword: ['', Validators.required],
       descripcion: ['', Validators.required],
       nuevaHabilidad: ['']
@@ -31,7 +31,7 @@ export class RegistroFormComponent {
   //Agregar una nueva habilidad al array de habilidades
   agregarHabilidad() {
     const nueva = this.registroForm.get('nuevaHabilidad')?.value.trim();
-    if (nueva) {
+    if (nueva && !this.habilidades.includes(nueva)) {
       this.habilidades.push(nueva);
       this.registroForm.get('nuevaHabilidad')?.setValue('');
     }
@@ -49,22 +49,61 @@ export class RegistroFormComponent {
     }
   }
 
+  //Cuando se envia el folumlario, lo primero es comprobar si el formulario es válido
   onSubmit() {
-    if (this.registroForm.valid) {
-      // Aquí enviarías la data al backend
-      console.log('Formulario:', this.registroForm.value);
-      console.log('Habilidades:', this.habilidades);
-      console.log('CV:', this.cvFile);
+    if (this.registroForm.valid && this.cvFile) {
+      //Validar que las contraseñas sean iguales
+      if (this.registroForm.value.contrasena !== this.registroForm.value.confirmarPassword) {
+        alert('Las contraseñas no coinciden');
+        return;
+      }
 
-      // Simular login exitoso
-      // authService.loginSimulado();
-      this.authState.isLoggedIn = true;
-      this.router.navigate(['/']);
+      //Crear el objeto usuario
+      const usuario = {
+        nombre: this.registroForm.value.nombre,
+        email: this.registroForm.value.email,
+        contrasena: this.registroForm.value.contrasena,
+        descripcion: this.registroForm.value.descripcion,
+        habilidades: JSON.stringify(this.habilidades)
+      };
+      console.log(usuario);
 
-    }else{
-      console.log('Formulario inválido');
-      // Aquí podrías mostrar un mensaje de error al usuario
-      
+      //Llamar al servicio de registrar usuario
+      this.authState.registarUsuario(usuario, this.cvFile).subscribe(
+        {
+          next:() => {
+            this.router.navigate(['/login']);
+          },
+
+          error:(error) => {
+            console.error('Detalles del error:', error);
+            if (error.status === 403) {
+              alert('Acceso denegado: Verifica CORS/CSRF en el backend');
+            } else {
+              alert('Error en el registro: ' + error.error);
+            }
+              }
+            }
+      )
+
+    }else if (this.registroForm.invalid) { //Si el formulario es invalido
+      //Comprobar si el formulario es inválido
+      Object.entries(this.registroForm.controls).forEach(([key, control]) => {
+        if (control.invalid) {
+            if (control.errors?.['required']) {
+            alert(`→ "${key}" es requerido.`); //Comprobar si el campo es requerido
+          }
+
+          if (control.errors?.['minlength']) { //comprobar si el campo tiene un minimo de caracteres
+            alert(`→ "${key}" debe tener al menos ${control.errors['minlength'].requiredLength} caracteres.`);
+          }
+
+          if (control.errors?.['email']) { //comprobar si el campo es un email valido
+            alert(`→ "${key}" no es un correo electrónico válido.`);
+          }
+        }
+      });
+      return;
     }
   }
 
