@@ -15,17 +15,22 @@ export class RegistroFormComponent {
   registroForm: FormGroup;
   habilidades: string[] = [];
   cvFile: File | null = null;
+  cvError: string | null = null;
   
 
   constructor(private formBuilder: FormBuilder, private router: Router, private authState: AuthStateService) {
     this.registroForm = this.formBuilder.group({
-      nombre: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email, Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]],
       contrasena: ['', [Validators.required, Validators.minLength(6)]],
       confirmarPassword: ['', Validators.required],
       descripcion: ['', Validators.required],
-      nuevaHabilidad: ['']
-    });
+      nuevaHabilidad: this.formBuilder.control('', {
+                        updateOn: 'change', // o 'blur'
+                        validators: [] // si quieres añadir validadores aquí también
+                      }) // Campo para añadir habilidades
+     
+    }, { updateOn: 'submit' });
   }
 
   //Agregar una nueva habilidad al array de habilidades
@@ -45,16 +50,40 @@ export class RegistroFormComponent {
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files?.length) {
-      this.cvFile = input.files[0];
+    const file = input.files[0];
+    
+    // Validar que no esté vacío
+    if (file.size === 0) {
+      this.cvError = 'El archivo está vacío';
+      this.cvFile = null;
+      return;
     }
+    
+    // Validar que sea PDF
+    if (file.type !== 'application/pdf') {
+      this.cvError = 'El archivo debe ser un PDF';
+      this.cvFile = null;
+      return;
+    }
+    
+    // Si pasa las validaciones
+    this.cvError = null;
+    this.cvFile = file;
+  } else {
+    this.cvError = 'Por favor, selecciona un archivo';
+    this.cvFile = null;
+  }
   }
 
   //Cuando se envia el folumlario, lo primero es comprobar si el formulario es válido
+  formCompletado = false;
+  contrasenasDiferentes = false;
   onSubmit() {
-    if (this.registroForm.valid && this.cvFile) {
+    this.formCompletado = true;
+    if (this.registroForm.valid && this.cvFile && !this.cvError) {
       //Validar que las contraseñas sean iguales
       if (this.registroForm.value.contrasena !== this.registroForm.value.confirmarPassword) {
-        alert('Las contraseñas no coinciden');
+        this.contrasenasDiferentes = true;
         return;
       }
 
@@ -85,24 +114,8 @@ export class RegistroFormComponent {
               }
             }
       )
-
-    }else if (this.registroForm.invalid) { //Si el formulario es invalido
-      //Comprobar si el formulario es inválido
-      Object.entries(this.registroForm.controls).forEach(([key, control]) => {
-        if (control.invalid) {
-            if (control.errors?.['required']) {
-            alert(`→ "${key}" es requerido.`); //Comprobar si el campo es requerido
-          }
-
-          if (control.errors?.['minlength']) { //comprobar si el campo tiene un minimo de caracteres
-            alert(`→ "${key}" debe tener al menos ${control.errors['minlength'].requiredLength} caracteres.`);
-          }
-
-          if (control.errors?.['email']) { //comprobar si el campo es un email valido
-            alert(`→ "${key}" no es un correo electrónico válido.`);
-          }
-        }
-      });
+    }else if (!this.cvFile) { //Si el archivo no es valido
+      this.cvError = "Por favor, sube tu CV en formato PDF";
       return;
     }
   }

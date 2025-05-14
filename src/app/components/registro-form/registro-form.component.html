@@ -24,24 +24,38 @@
       <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
         <img src="icons/user.svg" alt="Nombre de usuario" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
         <input type="text" placeholder="Nombre de usuario" formControlName="nombre" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+        <small *ngIf="registroForm.get('nombre')?.errors?.['required'] && formCompletado" 
+              class="text-red-500 block text-sm">
+          El nombre es obligatorio
+        </small>
+        <small *ngIf="registroForm.get('nombre')?.errors?.['minlength'] && formCompletado" class="text-red-500 block text-sm">
+          Nombre con un mínimo 3 caracteres
+        </small>
       </div>
+
 
       <!-- Correo -->
       <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
         <img src="icons/mailColor.svg" alt="Correo Electronico" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
         <input type="email" placeholder="Correo" formControlName="email" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+        <small *ngIf="registroForm.get('email')?.errors?.['required'] && formCompletado" class="text-red-500 text-sm">El email es obligatorio.</small>
+        <small *ngIf="registroForm.get('email')?.errors?.['pattern'] && formCompletado" class="text-red-500 block text-sm">Email con estructura incorrecta.</small>
       </div>
 
       <!-- Contraseña -->
       <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
         <img src="icons/password.svg" alt="Contraseña" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
         <input type="password" placeholder="Contraseña" formControlName="contrasena" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+        <small *ngIf="registroForm.get('contrasena')?.errors?.['required'] && formCompletado" class="text-red-500 text-sm">La contraseña es obligatoria.</small>
+        <small *ngIf="registroForm.get('contrasena')?.errors?.['minlength'] && formCompletado" class="text-red-500 text-sm">La contraseña debe tener al menos 6 caracteres.</small>
       </div>
 
       <!-- Confirmar Contraseña -->
       <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
         <img src="icons/confirm.svg" alt="Confirmar Contraseña" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
         <input type="password" placeholder="Confirmar Contraseña" formControlName="confirmarPassword" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+        <small *ngIf="registroForm.get('confirmarPassword')?.errors?.['required'] && formCompletado" class="text-red-500 text-sm">La confirmación de contraseña es obligatoria.</small>
+        <small *ngIf="contrasenasDiferentes" class="text-red-500 text-sm">Las contraseñas no coinciden.</small>
       </div>
 
       <!-- Descripción Personal -->
@@ -50,6 +64,7 @@
           <img src="icons/descripcion.svg" alt="Descripción personal" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8"> Descripción personal
         </label>
         <textarea formControlName="descripcion" rows="3" placeholder="Cuéntanos un poco sobre ti, tu experiencia o qué tipo de trabajo buscas..." class="w-full outline-none sm:text-sm text-xs lg:text-base font-poppins text-black placeholder:text-gray-400"></textarea>
+        <small *ngIf="registroForm.get('descripcion')?.errors?.['required'] && formCompletado" class="text-red-500 text-sm">La descripción es obligatoria.</small>
       </div>
 
       <!-- Habilidades -->
@@ -72,6 +87,9 @@
       <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
         <img src="icons/pdfFile.svg" alt="Agregar CV" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
         <input type="file" accept="application/pdf" (change)="onFileSelected($event)" class="w-full text-sm text-gray-600" />
+        <small *ngIf="cvError" class="text-red-500 text-sm mt-1">
+          {{ cvError }}
+        </small>
       </div>
 
       <!-- Botón registrarse -->
