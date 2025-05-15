@@ -12,11 +12,15 @@ import { AuthStateService } from '../../services/auth.service';
 })
 export class RegistroFormComponent {
 
+  //Definimos el formulario
   registroForm: FormGroup;
   habilidades: string[] = [];
   cvFile: File | null = null;
   cvError: string | null = null;
-  
+  //Propiedades para controlar estados del formulario
+  formCompletado = false;
+  contrasenasDiferentes = false;
+  showPassword = false;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private authState: AuthStateService) {
     this.registroForm = this.formBuilder.group({
@@ -69,15 +73,14 @@ export class RegistroFormComponent {
     // Si pasa las validaciones
     this.cvError = null;
     this.cvFile = file;
-  } else {
-    this.cvError = 'Por favor, selecciona un archivo';
-    this.cvFile = null;
-  }
+    } else {
+      this.cvError = 'Por favor, selecciona un archivo';
+      this.cvFile = null;
+    }
   }
 
   //Cuando se envia el folumlario, lo primero es comprobar si el formulario es válido
-  formCompletado = false;
-  contrasenasDiferentes = false;
+ 
   onSubmit() {
     this.formCompletado = true;
     if (this.registroForm.valid && this.cvFile && !this.cvError) {

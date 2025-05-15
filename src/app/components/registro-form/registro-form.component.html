@@ -43,9 +43,21 @@
       </div>
 
       <!-- Contraseña -->
-      <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
+      <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto relative">
         <img src="icons/password.svg" alt="Contraseña" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
-        <input type="password" placeholder="Contraseña" formControlName="contrasena" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+        <input [type]="showPassword ? 'text' : 'password'" placeholder="Contraseña" formControlName="contrasena" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+        <button 
+          type="button" 
+          (click)="showPassword = !showPassword" 
+          class="absolute right-3 focus:outline-none"
+          aria-label="Mostrar/ocultar contraseña"
+        >
+          <img 
+            [src]="showPassword ? 'icons/eye-off.svg' : 'icons/eye.svg'" 
+            alt="Mostrar/ocultar contraseña" 
+            class="h-5 w-5"
+          />
+        </button>
         <small *ngIf="registroForm.get('contrasena')?.errors?.['required'] && formCompletado" class="text-red-500 text-sm">La contraseña es obligatoria.</small>
         <small *ngIf="registroForm.get('contrasena')?.errors?.['minlength'] && formCompletado" class="text-red-500 text-sm">La contraseña debe tener al menos 6 caracteres.</small>
       </div>
