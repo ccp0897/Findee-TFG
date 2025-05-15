@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { AuthStateService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -18,8 +18,9 @@ export class HeaderComponent {
     this.router.navigate(['/login']);
   }
 
-  logout(){
+  logout() {
     this.authState.logout();
+    this.router.navigate(['/login']);
   }
 
 }

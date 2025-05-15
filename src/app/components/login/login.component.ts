@@ -15,24 +15,20 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   rememberMe: boolean = false;
-  constructor(private authState: AuthStateService, private router: Router) {}
+  errorMessage: string | null = null;
+
+  constructor(public authState: AuthStateService, private router: Router) {}
 
   onSubmit() {
-    // Lógica para manejar el envío del formulario
-    console.log('Login attempt with:', {
-      email: this.email,
-      password: this.password,
-      rememberMe: this.rememberMe
-    });
-    this.onLogin();
-    // Redirigir al usuario a la página de inicio después de iniciar sesión
-    this.router.navigate(['/']);
-  }
-  onLogin() {
-    // Aquí iría tu validación real con Spring
-    // Por ahora simulamos un login exitoso
-    this.authState.login(this.email);
-    this.authState.isLoggedIn = true; // Puedes cambiar esto directamente
+    this.authState.login(this.email, this.password).subscribe({
+      next: () => {
+        this.router.navigate(['/home']);
+      },
+      error: (error) => {
+        
+      }
+    })
+    
   }
 
 

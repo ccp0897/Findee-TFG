@@ -12,26 +12,35 @@ import { AuthStateService } from '../../services/auth.service';
 })
 export class RegistroFormComponent {
 
+  //Definimos el formulario
   registroForm: FormGroup;
   habilidades: string[] = [];
   cvFile: File | null = null;
-  
+  cvError: string | null = null;
+  //Propiedades para controlar estados del formulario
+  formCompletado = false;
+  contrasenasDiferentes = false;
+  showPassword = false;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, public authState: AuthStateService) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private authState: AuthStateService) {
     this.registroForm = this.formBuilder.group({
-      nombre: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email, Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]],
+      contrasena: ['', [Validators.required, Validators.minLength(6)]],
       confirmarPassword: ['', Validators.required],
       descripcion: ['', Validators.required],
-      nuevaHabilidad: ['']
-    });
+      nuevaHabilidad: this.formBuilder.control('', {
+                        updateOn: 'change', // o 'blur'
+                        validators: [] // si quieres añadir validadores aquí también
+                      }) // Campo para añadir habilidades
+     
+    }, { updateOn: 'submit' });
   }
 
   //Agregar una nueva habilidad al array de habilidades
   agregarHabilidad() {
     const nueva = this.registroForm.get('nuevaHabilidad')?.value.trim();
-    if (nueva) {
+    if (nueva && !this.habilidades.includes(nueva)) {
       this.habilidades.push(nueva);
       this.registroForm.get('nuevaHabilidad')?.setValue('');
     }
@@ -45,26 +54,72 @@ export class RegistroFormComponent {
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files?.length) {
-      this.cvFile = input.files[0];
+    const file = input.files[0];
+    
+    // Validar que no esté vacío
+    if (file.size === 0) {
+      this.cvError = 'El archivo está vacío';
+      this.cvFile = null;
+      return;
+    }
+    
+    // Validar que sea PDF
+    if (file.type !== 'application/pdf') {
+      this.cvError = 'El archivo debe ser un PDF';
+      this.cvFile = null;
+      return;
+    }
+    
+    // Si pasa las validaciones
+    this.cvError = null;
+    this.cvFile = file;
+    } else {
+      this.cvError = 'Por favor, selecciona un archivo';
+      this.cvFile = null;
     }
   }
 
+  //Cuando se envia el folumlario, lo primero es comprobar si el formulario es válido
+ 
   onSubmit() {
-    if (this.registroForm.valid) {
-      // Aquí enviarías la data al backend
-      console.log('Formulario:', this.registroForm.value);
-      console.log('Habilidades:', this.habilidades);
-      console.log('CV:', this.cvFile);
+    this.formCompletado = true;
+    if (this.registroForm.valid && this.cvFile && !this.cvError) {
+      //Validar que las contraseñas sean iguales
+      if (this.registroForm.value.contrasena !== this.registroForm.value.confirmarPassword) {
+        this.contrasenasDiferentes = true;
+        return;
+      }
 
-      // Simular login exitoso
-      // authService.loginSimulado();
-      this.authState.isLoggedIn = true;
-      this.router.navigate(['/']);
+      //Crear el objeto usuario
+      const usuario = {
+        nombre: this.registroForm.value.nombre,
+        email: this.registroForm.value.email,
+        contrasena: this.registroForm.value.contrasena,
+        descripcion: this.registroForm.value.descripcion,
+        habilidades: JSON.stringify(this.habilidades)
+      };
+      console.log(usuario);
 
-    }else{
-      console.log('Formulario inválido');
-      // Aquí podrías mostrar un mensaje de error al usuario
-      
+      //Llamar al servicio de registrar usuario
+      this.authState.registarUsuario(usuario, this.cvFile).subscribe(
+        {
+          next:() => {
+            this.router.navigate(['/login']);
+          },
+
+          error:(error) => {
+            console.error('Detalles del error:', error);
+            if (error.status === 403) {
+              alert('Acceso denegado: Verifica CORS/CSRF en el backend');
+            } else {
+              alert('Error en el registro: ' + error.error);
+            }
+              }
+            }
+      )
+    }else if (!this.cvFile) { //Si el archivo no es valido
+      this.cvError = "Por favor, sube tu CV en formato PDF";
+      return;
     }
   }
 
