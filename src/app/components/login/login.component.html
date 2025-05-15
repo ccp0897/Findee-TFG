@@ -53,7 +53,11 @@
                 class="appearance-none block w-full px-3 py-2  placeholder-secondary-text focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-xl lg:text-2xl font-poppins text-black">            </div>
             
           </div>
-  
+          <!-- Error de inicio de sesión -->
+           <div *ngIf="authState.error" class="text-red-500 text-sm text-center">
+             {{authState.error}}
+
+           </div>
           <!-- Remember me & Forgot password -->
           <div class="flex items-center justify-between">
             <div class="flex items-center">
