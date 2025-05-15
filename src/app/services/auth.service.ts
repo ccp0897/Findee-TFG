@@ -14,17 +14,6 @@ export class AuthStateService {
   nombre: string = '';
   error: string | null = null;
 
-  // Métodos básicos para modificar el estado
-  // login(username: string) {
-  //   this.isLoggedIn = true;
-  //   this.email = username;
-  // }
-
-  // logout() {
-  //   this.isLoggedIn = false;
-  //   this.email = '';
-  // }
-
   //Comienzo del uso de la API
 
   //URL de la API
@@ -69,7 +58,6 @@ export class AuthStateService {
     localStorage.removeItem('token');
     localStorage.removeItem('userData');
   }
-
 
 
   //Método para registrar un nuevo usuario, al que se le pasa un objeto usuario y un archivo cvFile y se realiza la llamada a la API, siendo el método POST y el cuerpo

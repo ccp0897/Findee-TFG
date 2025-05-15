@@ -1,0 +1,36 @@
+<div class="container mx-auto py-8 flex flex-col md:flex-row gap-4">
+
+    <aside class="w-full md:w-1/5 p-4 rounded-lg border border-background-alt">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Filtros</h1>
+    </aside>
+    <main class="w-full md:w-4/5 bg-white p-4 rounded-lg">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Resultados</h1>
+
+        <div class="flex flex-col gap-4"> 
+        <app-card-empleo 
+            *ngFor="let empleo of empleos"
+            [empleo]="empleo"
+        ></app-card-empleo>
+        </div>
+        <!-- Mensaje de depuración -->
+        <div *ngIf="empleos.length === 0" class="text-red-500">
+        No hay empleos para mostrar
+        </div>
+        <!-- Paginación -->
+        <div class="mt-8 flex justify-center">
+            <div class="flex space-x-2">
+            <button 
+                *ngFor="let page of [].constructor(totalPages); let i = index"
+                (click)="onPageChange(i)"
+                [class.bg-blue-500]="currentPage === i"
+                [class.text-white]="currentPage === i"
+                class="px-4 py-2 border rounded hover:bg-gray-100"
+            >
+                {{ i + 1 }}
+            </button>
+            </div>
+        </div>
+
+    </main>
+    
+</div>
