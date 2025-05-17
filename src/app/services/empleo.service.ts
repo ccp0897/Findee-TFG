@@ -12,16 +12,30 @@ export class EmpleoService {
 
   constructor(private http: HttpClient) { }
 
- getEmpleosPaginados(page: number = 0, size: number = 10): Observable<PagedResponse<Empleo>> {
-  const params = new HttpParams()
+
+  //Funcion que llama a la api para traerse los empleos de forma paginada
+  // Se le pasan como parametros la pagina y el tamaño de la pagina
+  getEmpleosPaginados(page: number = 0, size: number = 10, filtros?: any): Observable<PagedResponse<Empleo>> {
+  console.log('Solicitando empleos con:', {page, size, filtros}); // Debug
+  
+  let params = new HttpParams()
     .set('page', page.toString())
     .set('size', size.toString());
 
-  return this.http.get<PagedResponse<Empleo>>(`${this.apiUrl}/empleos`, { params }).pipe(
-    tap(response => {
-      console.log('Respuesta del servidor:', response); // Debug
-      console.log('Datos recibidos:', response.content); // Debug
-    })
-  );
+  if (filtros) {
+    Object.keys(filtros).forEach(key => {
+      if (filtros[key] && filtros[key].toString().length > 0) {
+        params = params.set(key, filtros[key].toString());
+        console.log(`Añadiendo filtro ${key}:`, filtros[key]); // Debug
+      }
+    });
+  }
+
+  console.log('Params finales:', params.toString()); // Debug
+  return this.http.get<PagedResponse<Empleo>>(`${this.apiUrl}/empleos`, { params });
 }
+
+  obtenerOpcionesFiltro(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/empleos/filtro`);
+  }
 }

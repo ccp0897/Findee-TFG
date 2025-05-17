@@ -1,4 +1,4 @@
-<div class="empleo-card bg-white rounded-lg shadow-md p-6 mb-4">
+<div class="empleo-card bg-white rounded-lg shadow-md p-6 mb-4 hover:bg-background-alt-2 hover:scale-101 cursor-pointer">
   <div class="flex justify-between items-start">
     <div>
       <h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-black font-roboto">{{ empleo.title }}</h3>
@@ -17,7 +17,7 @@
 
   <div class="mt-4">
     <p class="text-secondary-text font-poppins">{{ getDisplayCity(empleo.city) }} | {{ getDisplayRemote(empleo.remote) }}</p>
-    <p class="text-black font-poppins mt-2 line-clamp-3">{{ empleo.description }}</p>
+    <p class="text-black font-poppins mt-2 line-clamp-3 whitespace-pre-line">{{ empleo.description }}</p>
   </div>
 
   <div class="mt-4 pt-4">

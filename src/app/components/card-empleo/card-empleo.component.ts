@@ -16,7 +16,7 @@ export class CardEmpleoComponent {
     this.empleo.guardado = !this.empleo.guardado;
   }
   ngOnInit() {
-    console.log('Empleo recibido en tarjeta:', this.empleo); // Debug
+    //console.log('Empleo recibido en tarjeta:', this.empleo); // Debug
   }
 
   //Comprobacion de si elementos estan vacios o no dan valor

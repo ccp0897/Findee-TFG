@@ -1,0 +1,36 @@
+/* Transiciones suaves para el desplegable */
+.transition-all {
+  transition-property: all;
+}
+
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.max-h-0 {
+  max-height: 0;
+}
+
+.max-h-\[1000px\] {
+  max-height: 1000px;
+}
+
+/* Estilos para el botón de filtros móvil */
+.md\:hidden {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .md\:hidden {
+    display: block;
+  }
+  
+  .md\:block {
+    display: none;
+  }
+}
+
+/* Asegúrate que el z-index es adecuado para el dropdown */
+.ciudades-lista {
+  z-index: 50;
+}

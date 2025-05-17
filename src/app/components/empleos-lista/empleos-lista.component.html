@@ -1,10 +1,14 @@
 <div class="container mx-auto py-8 flex flex-col md:flex-row gap-4">
 
-    <aside class="w-full md:w-1/5 p-4 rounded-lg border border-background-alt">
-        <h1 class="text-3xl font-bold text-gray-800 mb-8">Filtros</h1>
+    <aside class="w-full md:w-1/5 p-4 rounded-lg border border-background-alt max-h-fit">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Filtros</h1>
+        <app-filtros
+            (filtrosChange)="onFiltrosChange($event)"
+            
+        ></app-filtros>
     </aside>
     <main class="w-full md:w-4/5 bg-white p-4 rounded-lg">
-        <h1 class="text-3xl font-bold text-gray-800 mb-8">Resultados</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Resultados</h1>
 
         <div class="flex flex-col gap-4"> 
         <app-card-empleo 
@@ -13,22 +17,68 @@
         ></app-card-empleo>
         </div>
         <!-- Mensaje de depuración -->
-        <div *ngIf="empleos.length === 0" class="text-red-500">
+        <div *ngIf="empleos.length === 0" class="text-secondary-text text-center">
         No hay empleos para mostrar
         </div>
-        <!-- Paginación -->
-        <div class="mt-8 flex justify-center">
-            <div class="flex space-x-2">
+
+        <!-- Paginacion -->
+        <div class="mt-8 flex justify-center items-center gap-2">
+            <!-- Botón Anterior -->
             <button 
-                *ngFor="let page of [].constructor(totalPages); let i = index"
-                (click)="onPageChange(i)"
-                [class.bg-blue-500]="currentPage === i"
-                [class.text-white]="currentPage === i"
-                class="px-4 py-2 border rounded hover:bg-gray-100"
+                (click)="onPageChange(currentPage - 1)"
+                [disabled]="currentPage === 0"
+                class="px-4 py-2 border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
-                {{ i + 1 }}
+                Anterior
             </button>
-            </div>
+
+            <!-- Primera página -->
+            <button 
+                *ngIf="currentPage > 1 && totalPages > 3"
+                (click)="onPageChange(0)"
+                class="px-4 py-2 border rounded hover:bg-gray-100 cursor-pointer"
+            >
+                1
+            </button>
+
+            <!-- Puntos suspensivos iniciales -->
+            <span *ngIf="currentPage > 2 && totalPages > 3" class="px-2">...</span>
+
+            <!-- Rango de páginas cercanas -->
+            <ng-container *ngFor="let page of getVisiblePages()">
+                <button 
+                (click)="onPageChange(page)"
+                [class.bg-secondary]="currentPage === page"
+                [class.text-white]="currentPage === page"
+                [class.font-bold]="currentPage === page"
+                [class.border-secondary]="currentPage === page"
+                [class.hover:text-secondary]="currentPage === page"
+                class="px-4 py-2 border rounded hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
+                >
+                {{ page + 1 }}
+                </button>
+            </ng-container>
+
+            <!-- Puntos suspensivos finales -->
+            <span *ngIf="currentPage < totalPages - 3 && totalPages > 3" class="px-2">...</span>
+
+            <!-- Última página -->
+            <button 
+                *ngIf="currentPage < totalPages - 2 && totalPages > 3"
+                (click)="onPageChange(totalPages - 1)"
+                class="px-4 py-2 border rounded hover:bg-gray-100 cursor-pointer"
+            >
+                {{ totalPages }}
+            </button>
+
+            <!-- Botón Siguiente -->
+            <button 
+                (click)="onPageChange(currentPage + 1)"
+                [disabled]="currentPage === totalPages - 1"
+                class="px-4 py-2 border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            >
+                Siguiente
+            </button>
         </div>
 
     </main>

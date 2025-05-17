@@ -1,0 +1,227 @@
+<!-- Version movil -->
+<div class="block md:hidden mb-4">
+  <button 
+    (click)="toggleFiltros()"
+    class="w-full flex justify-between items-center p-3 bg-primary text-white rounded-lg"
+  >
+    <span class="text-lg font-bold">Filtros</span>
+    <img *ngIf="!abrirFltros; else cerrarFiltros" src="icons/filter.svg" alt="Filtros">
+
+    <ng-template #cerrarFiltros>
+      <img src="icons/closeWhite.svg" alt="Cerrar Filtros">
+    </ng-template>
+  </button>
+
+  <div 
+    class="bg-white rounded-lg shadow-lg mt-2 transition-all duration-300 overflow-scroll"
+    [class.max-h-0]="!abrirFltros"
+    [class.max-h-[400px]]="abrirFltros"
+  >
+    <div class="p-4 space-y-6">
+      <!-- Contenido de los filtros (el mismo que en la versión desktop) -->
+      <!-- Filtro por Ciudad -->
+      <div class="mb-6">
+        <h3 class="text-lg font-medium text-black mb-2">Ciudad</h3>
+        <div class="relative">
+          <input 
+            type="text"
+            formControlName="ciudad"
+            placeholder="Buscar ciudad..."
+            class="w-full px-2 py-4 border border-background-alt rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-secondary-text"
+            [value]="ciudadSeleccionada"
+            (input)="onCiudadInputChange($event)"
+            (focus)="showCiudadesList = true"
+            (blur)="hideCiudadesListWithDelay()" 
+            list="ciudades-datalist"
+          >
+        </div>
+        <datalist id="ciudades-datalist">
+          <option *ngFor="let ciudad of todasLasCiudades" [value]="ciudad" (click)="selectCiudad(ciudad)"></option>
+        </datalist>
+      </div>
+
+      <!-- Resto de los filtros (tipoEmpleo, tipoContrato, etc.) -->
+      <!-- Filtro por Tipo de Empleo -->
+      <div>
+        <h3 class="text-lg font-medium text-black mb-2">Tipo de Empleo</h3>
+        <div class="space-y-2">
+          <div *ngFor="let opcion of opcionesFiltro.tipoEmpleo">
+            <label class="flex items-center">
+              <input 
+                type="checkbox" 
+                [value]="opcion"
+                [checked]="isChecked('tipoEmpleo', opcion)"
+                (change)="onCheckboxChange($event, 'tipoEmpleo')"
+                class="rounded text-primary focus:ring-primary"
+              >
+              <span class="ml-2 text-sm text-secondary-text">{{ opcion }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtro por Tipo de Contrato -->
+      <div class="border-t border-gray-200 pt-4">
+        <h3 class="text-lg font-medium text-black mb-2">Tipo de Contrato</h3>
+        <div class="space-y-2">
+          <div *ngFor="let opcion of opcionesFiltro.tipoContrato">
+            <label class="flex items-center">
+              <input 
+                type="checkbox" 
+                [value]="opcion"
+                [checked]="isChecked('tipoContrato', opcion)"
+                (change)="onCheckboxChange($event, 'tipoContrato')"
+                class="rounded text-primary focus:ring-primary"
+              >
+              <span class="ml-2 text-sm text-secondary-text">{{ opcion }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtro por Tipo de Jornada -->
+      <div class="border-t border-gray-200 pt-4">
+        <h3 class="text-lg font-medium text-black mb-2">Tipo de Jornada</h3>
+        <div class="space-y-2">
+          <div *ngFor="let opcion of opcionesFiltro.tipoJornada">
+            <label class="flex items-center">
+              <input 
+                type="checkbox" 
+                [value]="opcion"
+                [checked]="isChecked('tipoJornada', opcion)"
+                (change)="onCheckboxChange($event, 'tipoJornada')"
+                class="rounded text-primary focus:ring-primary"
+              >
+              <span class="ml-2 text-sm text-secondary-text">{{ opcion }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtro por Categoría de Trabajo -->
+      <div class="border-t border-gray-200 pt-4">
+        <h3 class="text-lg font-medium text-black mb-2">Categoría de Trabajo</h3>
+        <div class="space-y-2">
+          <div *ngFor="let opcion of opcionesFiltro.categoriaTrabajo">
+            <label class="flex items-center">
+              <input 
+                type="checkbox" 
+                [value]="opcion"
+                [checked]="isChecked('categoriaTrabajo', opcion)"
+                (change)="onCheckboxChange($event, 'categoriaTrabajo')"
+                class="rounded text-primary focus:ring-primary"
+              >
+              <span class="ml-2 text-sm text-secondary-text">{{ opcion }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Version Desktop -->
+<div class="hidden md:block space-y-6">
+  <div class="space-y-6">
+    <!-- Filtro por Ciudad -->
+    <div class="mb-6">
+    <h3 class="text-lg font-medium text-black mb-2">Ciudad</h3>
+    <div class="relative">
+      <input 
+          type="text"
+          formControlName="ciudad"
+          placeholder="Buscar ciudad..."
+          class="w-full px-2 py-4 border border-background-alt rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-secondary-text"
+          [value]="ciudadSeleccionada"
+          (input)="onCiudadInputChange($event)"
+          (focus)="showCiudadesList = true"
+          (blur)="hideCiudadesListWithDelay()" 
+          list="ciudades-datalist"
+      >
+      
+    </div>
+    <!-- Datalist nativo como fallback -->
+    <datalist id="ciudades-datalist">
+      <option *ngFor="let ciudad of todasLasCiudades" [value]="ciudad" (click)="selectCiudad(ciudad)"></option>
+    </datalist>
+  </div>
+
+    <!-- Filtro por Tipo de Empleo -->
+    <div>
+      <h3 class="text-lg font-medium text-black mb-2">Tipo de Empleo</h3>
+      <div class="space-y-2">
+        <div *ngFor="let opcion of opcionesFiltro.tipoEmpleo">
+          <label class="flex items-center">
+            <input 
+              type="checkbox" 
+              [value]="opcion"
+              [checked]="isChecked('tipoEmpleo', opcion)"
+              (change)="onCheckboxChange($event, 'tipoEmpleo')"
+              class="rounded text-primary focus:ring-primary"
+            >
+            <span class="ml-2 text-sm text-secondary-text">{{ opcion }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtro por Tipo de Contrato -->
+    <div class="border-t border-gray-200 pt-4">
+      <h3 class="text-lg font-medium text-black mb-2">Tipo de Contrato</h3>
+      <div class="space-y-2">
+        <div *ngFor="let opcion of opcionesFiltro.tipoContrato">
+          <label class="flex items-center">
+            <input 
+              type="checkbox" 
+              [value]="opcion"
+              [checked]="isChecked('tipoContrato', opcion)"
+              (change)="onCheckboxChange($event, 'tipoContrato')"
+              class="rounded text-primary focus:ring-primary"
+            >
+            <span class="ml-2 text-sm text-secondary-text">{{ opcion }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtro por Tipo de Jornada -->
+    <div class="border-t border-gray-200 pt-4">
+      <h3 class="text-lg font-medium text-black mb-2">Tipo de Jornada</h3>
+      <div class="space-y-2">
+        <div *ngFor="let opcion of opcionesFiltro.tipoJornada">
+          <label class="flex items-center">
+            <input 
+              type="checkbox" 
+              [value]="opcion"
+              [checked]="isChecked('tipoJornada', opcion)"
+              (change)="onCheckboxChange($event, 'tipoJornada')"
+              class="rounded text-primary focus:ring-primary"
+            >
+            <span class="ml-2 text-sm text-secondary-text">{{ opcion }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtro por Categoría de Trabajo -->
+    <div class="border-t border-gray-200 pt-4">
+      <h3 class="text-lg font-medium text-black mb-2">Categoría de Trabajo</h3>
+      <div class="space-y-2">
+        <div *ngFor="let opcion of opcionesFiltro.categoriaTrabajo">
+          <label class="flex items-center">
+            <input 
+              type="checkbox" 
+              [value]="opcion"
+              [checked]="isChecked('categoriaTrabajo', opcion)"
+              (change)="onCheckboxChange($event, 'categoriaTrabajo')"
+              class="rounded text-primary focus:ring-primary"
+            >
+            <span class="ml-2 text-sm text-secondary-text">{{ opcion }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
