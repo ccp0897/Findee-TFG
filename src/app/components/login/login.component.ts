@@ -30,6 +30,10 @@ export class LoginComponent {
     })
     
   }
+  volverAtras(){
+    this.router.navigate(['/']);
+    this.authState.error = null;
+  }
 
 
 }
