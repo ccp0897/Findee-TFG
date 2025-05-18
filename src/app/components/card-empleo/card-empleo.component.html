@@ -1,18 +1,11 @@
-<div class="empleo-card bg-white rounded-lg shadow-md p-6 mb-4 hover:bg-background-alt-2 hover:scale-101 cursor-pointer">
-  <div class="flex justify-between items-start">
+<div class="empleo-card bg-white rounded-lg shadow-md p-6 mb-4 hover:bg-background-alt-2 hover:scale-101 relative" >
+  <div class="cursor-pointer" (click)="abrirDetalleEmpleo()">
+    <div class="flex justify-between items-start">
     <div>
-      <h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-black font-roboto">{{ empleo.title }}</h3>
-      <p class="text-secondary font-roboto font-semibold text-base sm:text-lg md:text-xl lg:text-2xl">{{ empleo.companyName }}</p>
+      <h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-black font-roboto line-clamp-1">{{ empleo.title }}</h3>
+      <p class="text-secondary font-roboto font-semibold text-base sm:text-lg md:text-xl lg:text-2xl line-clamp-1">{{ empleo.companyName }}</p>
     </div>
-    <button 
-      (click)="toggleGuardado()"
-      class="text-secondary-text hover:text-tertiary transition-colors cursor-pointer"
-      [class.text-tertiary]="empleo.guardado"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" [class.fill-tertiary]="empleo.guardado" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-      </svg>
-    </button>
+    
   </div>
 
   <div class="mt-4">
@@ -27,4 +20,28 @@
       <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded">{{getDisplaySalary(empleo.salaryMin, empleo.salaryMax)}}</span>
     </div>
   </div>
+  </div>
+  <button 
+      (click)="toggleGuardado()"
+      class="absolute top-4 right-4 text-secondary-text hover:text-tertiary transition-colors cursor-pointer z-10"
+      [class.text-tertiary]="esFavorito"
+      [class.text-secondary-text]="!esFavorito"
+      [title]="esFavorito ? 'Desmarcar como favorito' : 'Marcar como favorito'"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" [class.fill-tertiary]="esFavorito" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+      </svg>
+    </button>
+  
+
+  <!-- Pop-up para mostrar detalles -->
+  
 </div>
+<app-empleo-detalle-pop-up 
+    *ngIf="mostrarPopUp"
+    [empleo]="empleo"
+    [esFavorito]="esFavorito"
+    (cerrarPopUp)="cerrarPopUp()"
+    (toggleFavorito)="toggleGuardado()"
+    (aplicar)="onAplicar($event)"
+  ></app-empleo-detalle-pop-up>

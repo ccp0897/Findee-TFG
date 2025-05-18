@@ -4,4 +4,5 @@ export default interface LoginResponse {
     nombre: string;
     message: string;
     success: boolean;
+    id: number;
 }

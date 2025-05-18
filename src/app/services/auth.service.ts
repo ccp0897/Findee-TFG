@@ -32,7 +32,7 @@ export class AuthStateService {
           this.email = response.email;
           this.nombre = response.nombre;
           localStorage.setItem('token', response.token);
-          localStorage.setItem('userData', JSON.stringify({ email: response.email, nombre: response.nombre }));
+          localStorage.setItem('userData', JSON.stringify({ id: response.id, email: response.email, nombre: response.nombre }));
         }
       }),
       catchError((error: HttpErrorResponse) => {
@@ -80,4 +80,34 @@ export class AuthStateService {
   return this.http.post(`${this.apiAuthUrl}registro`, formData);
 }
 
+//Metodo para obtener el ID del usuario logueado
+  getUserId(): number | null {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      const parsedData = JSON.parse(userData);
+      return parsedData.id;
+    }
+    return null;
+  }
+
+  //Obtener el token del localStorage
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  //Obtener los datos de usuario del localStorage
+  //Si no hay datos, devuelve null
+  getUserData(): any {
+    const userData = localStorage.getItem('userData');
+    return userData ? JSON.parse(userData) : null;
+  }
+
+  //Actualizar los datos del usuario en el localStorage
+  //Recibe un objeto con los nuevos datos y los actualiza
+  updateUserData(newData: any): void {
+    const userData = this.getUserData();
+    const updatedData = {...userData, ...newData};
+    localStorage.setItem('userData', JSON.stringify(updatedData));
+    this.nombre = updatedData.nombre;
+  }
 }

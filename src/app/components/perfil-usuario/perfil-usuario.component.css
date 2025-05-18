@@ -1,0 +1,14 @@
+.container {
+  max-width: 1200px;
+}
+
+.list-disc li {
+  margin-bottom: 0.25rem;
+}
+
+/* Asegurar que las cards tengan el mismo tamaño */
+.grid > * {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
