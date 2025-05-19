@@ -136,18 +136,33 @@ export class PerfilUsuarioComponent {
     }
   }
 
-  // Cargar más empleos favoritos
-  // Muestra más empleos favoritos al hacer scroll o clic
-  loadMore() {
-    const start = this.currentPage * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    const newItems = this.favoritos.slice(start, end);
-    
-    this.displayedFavoritos = [...this.displayedFavoritos, ...newItems];
-    this.currentPage++;
-    
-    this.hasMore = end < this.favoritos.length;
+  // Método para mostrar menos empleos
+showLess() {
+  // Reducir a la página anterior (si existe)
+  if (this.currentPage > 1) {
+    this.currentPage--;
+  } else {
+    // Si estamos en la primera página, mostrar solo los iniciales
+    this.currentPage = 0;
   }
+  
+  // Recalcular los empleos a mostrar
+  this.displayedFavoritos = this.favoritos.slice(0, this.currentPage * this.itemsPerPage);
+  this.hasMore = true; // Siempre habrá más para mostrar después de reducir
+}
+
+// Metodo para cargar más empleos
+// Carga más empleos favoritos y los agrega a la lista mostrada
+loadMore() {
+  const start = this.currentPage * this.itemsPerPage;
+  const end = start + this.itemsPerPage;
+  const newItems = this.favoritos.slice(start, end);
+  
+  this.displayedFavoritos = [...this.displayedFavoritos, ...newItems];
+  this.currentPage++;
+  
+  this.hasMore = end < this.favoritos.length;
+}
 
   //Actualizar el CV del usuario
   // Llama al servicio para actualizar el CV del usuario

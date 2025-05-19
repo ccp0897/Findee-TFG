@@ -85,7 +85,9 @@ export class RegistroFormComponent {
     this.formCompletado = true;
     if (this.registroForm.valid && this.cvFile && !this.cvError) {
       //Validar que las contraseñas sean iguales
+      this.contrasenasDiferentes = false;
       if (this.registroForm.value.contrasena !== this.registroForm.value.confirmarPassword) {
+        console.log('Las contraseñas no coinciden');
         this.contrasenasDiferentes = true;
         return;
       }

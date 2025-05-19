@@ -120,13 +120,23 @@
         ></app-card-empleo>
       </div>
 
-      <div class="mt-6 text-center">
+      <div class="mt-6 text-center flex justify-center items-center gap-4">
+        <!-- Botón Mostrar más -->
         <button 
           *ngIf="hasMore"
           (click)="loadMore()"
-          class="px-6 py-2 bg-primary text-white rounded-md hover:bg-secondary transition"
+          class="px-6 py-2 bg-primary text-white rounded-md hover:bg-secondary transition cursor-pointer"
         >
           Mostrar más
+        </button>
+
+        <!-- Botón Mostrar menos -->
+        <button 
+          *ngIf="displayedFavoritos.length > itemsPerPage"
+          (click)="showLess()"
+          class="px-6 py-2 bg-secondary text-white rounded-md hover:bg-background-alt hover:border hover:border-secondary hover:text-black transition cursor-pointer"
+        >
+          Mostrar menos
         </button>
       </div>
     </div>
