@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
+
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -94,5 +95,16 @@ public class Usuario {
 
     public Usuario(){}
 
-
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", email='" + email + '\'' +
+                ", contrasena='" + contrasena + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", habilidades='" + habilidades + '\'' +
+                ", cv='" + cv + '\'' +
+                '}';
+    }
 }

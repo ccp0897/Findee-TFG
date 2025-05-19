@@ -52,6 +52,6 @@ public class AuthService {
         if(usuario == null){
             throw new UsernameNotFoundException("Usuario no encontrado");
         }
-        return new LoginResponse(jwtToken, usuario.getEmail(), usuario.getNombre(), "Login exitoso", true);
+        return new LoginResponse(jwtToken, usuario.getEmail(), usuario.getNombre(), "Login exitoso", true, usuario.getId());
     }
 }

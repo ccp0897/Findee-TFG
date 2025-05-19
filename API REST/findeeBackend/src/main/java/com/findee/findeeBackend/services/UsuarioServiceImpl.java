@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -54,5 +55,15 @@ public class UsuarioServiceImpl implements UsuarioService {
         System.out.println("El usuario final es:" + usuario);
 
         usuarioDao.save(usuario);
+    }
+
+    @Override
+    public Usuario obtenerUsuarioPorId(Integer id){
+        return usuarioDao.buscarUsuarioPorId(id);
+    }
+
+    @Override
+    public Usuario save(Usuario usuario) {
+        return usuarioDao.save(usuario);
     }
 }

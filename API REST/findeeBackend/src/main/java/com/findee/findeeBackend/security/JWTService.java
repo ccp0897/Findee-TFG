@@ -5,6 +5,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,15 @@ import java.util.function.Function;
 public class JWTService {
 
     //Clave secreta automatica
-    private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final Key SECRET_KEY;
     //Tiempo de experiracion del token: 10 dias
     private static final long EXPIRATION_TIME = 864_000_000;
 
+
+    //Inyectar la clave desde application.properties
+    public JWTService(@Value("${jwt.secret}") String secretKey){
+        this.SECRET_KEY = Keys.hmacShaKeyFor(java.util.Base64.getDecoder().decode(secretKey));
+    }
 
     //Generar el token JWT
     public String generateToken(UserDetails userDetails){
@@ -32,7 +38,7 @@ public class JWTService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SECRET_KEY)
+                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
 

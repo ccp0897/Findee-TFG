@@ -6,15 +6,17 @@ public class LoginResponse {
     private String nombre;
     private String message;
     private boolean success;
+    private Integer id;
     public LoginResponse() {
     }
 
-    public LoginResponse(String token, String email, String nombre, String message, boolean success) {
+    public LoginResponse(String token, String email, String nombre, String message, boolean success, Integer id) {
         this.token = token;
         this.email = email;
         this.nombre = nombre;
         this.message = message;
         this.success = success;
+        this.id = id;
     }
 
     public String getToken() {
@@ -46,5 +48,13 @@ public class LoginResponse {
     }
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

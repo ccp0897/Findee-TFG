@@ -15,6 +15,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -54,7 +56,10 @@ public class AuthController {
             usuarioService.registrarUsuario(usuarioNuevo, cvFile);
 
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
+        } catch (IOException e) {
+            // Debug 3: Captura errores específico
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }catch (Exception e) {
             // Debug 3: Captura errores específicos
             System.err.println("ERROR EN REGISTRO: " + e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
