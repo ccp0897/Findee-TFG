@@ -54,25 +54,25 @@ export class RegistroFormComponent {
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files?.length) {
-    const file = input.files[0];
-    
-    // Validar que no esté vacío
-    if (file.size === 0) {
-      this.cvError = 'El archivo está vacío';
-      this.cvFile = null;
-      return;
-    }
-    
-    // Validar que sea PDF
-    if (file.type !== 'application/pdf') {
-      this.cvError = 'El archivo debe ser un PDF';
-      this.cvFile = null;
-      return;
-    }
-    
-    // Si pasa las validaciones
-    this.cvError = null;
-    this.cvFile = file;
+      const file = input.files[0];
+      
+      // Validar que no esté vacío
+      if (file.size === 0) {
+        this.cvError = 'El archivo está vacío';
+        this.cvFile = null;
+        return;
+      }
+      
+      // Validar que sea PDF
+      if (file.type !== 'application/pdf') {
+        this.cvError = 'El archivo debe ser un PDF';
+        this.cvFile = null;
+        return;
+      }
+      
+      // Si pasa las validaciones
+      this.cvError = null;
+      this.cvFile = file;
     } else {
       this.cvError = 'Por favor, selecciona un archivo';
       this.cvFile = null;

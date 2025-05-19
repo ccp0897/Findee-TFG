@@ -25,6 +25,8 @@ export class PerfilUsuarioComponent {
   currentPage = 0;
   hasMore = true;
   habilidadesArray: string[] = [];
+  selectedFile: File | null = null;
+  cvError: string | null = null;
 
   constructor(
     private authState: AuthStateService,
@@ -33,10 +35,13 @@ export class PerfilUsuarioComponent {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      nombre: ['', Validators.required],
-      descripcion: [''],
-      habilidades: [''],
-      cv: null
+      nombre: [
+        this.usuario?.nombre || '', // Valor inicial que cumpla con las validaciones
+        [Validators.required, Validators.minLength(3)]
+      ],
+      descripcion: [this.usuario?.descripcion || '', Validators.required],
+      habilidades: [this.habilidadesArray.join(', ') || ''],
+      cv: [null]
     });
   }
 
@@ -55,7 +60,7 @@ export class PerfilUsuarioComponent {
         
         // Inicializar el formulario con los datos del usuario
         this.form.patchValue({
-          nombre: usuario.nombre,
+          nombre: usuario.nombre || '',
           descripcion: usuario.descripcion || '',
           habilidades: this.habilidadesArray.join(', ') // Convertir array a string separado por comas
         });
@@ -85,7 +90,7 @@ export class PerfilUsuarioComponent {
     console.log('EditMode:', this.editMode);
     if (!this.editMode) {
       this.form.patchValue({
-        nombre: this.usuario.nombre,
+        nombre: this.usuario.nombre || '',
         descripcion: this.usuario.descripcion || '',
         habilidades: this.habilidadesArray.join(', ')
       });
@@ -114,9 +119,20 @@ export class PerfilUsuarioComponent {
           };
           this.habilidadesArray = updatedData.habilidades;
           this.editMode = false;
+          this.authState.nombre = updatedData.nombre; // Actualizar el nombre en el estado de autenticación
         },
         error: (err) => console.error('Error al actualizar usuario', err)
       });
+      if (this.selectedFile && !this.cvError) {
+        this.usuarioService.actualizarCV(this.usuario.id, this.selectedFile).subscribe({
+          next: () => {
+            console.log('CV actualizado con éxito');
+            this.selectedFile = null; // Limpiar el archivo seleccionado
+          },
+          error: (err) => console.error('Error al actualizar CV', err)
+        });
+      }
+      alert('Cambios guardados con éxito');
     }
   }
 
@@ -137,13 +153,26 @@ export class PerfilUsuarioComponent {
   // Llama al servicio para actualizar el CV del usuario
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
+    this.cvError = null; // Resetear el error al seleccionar un nuevo archivo
     if (file) {
-      this.usuarioService.actualizarCV(this.usuario.id, file).subscribe({
-        next: (response) => {
-          this.usuario.cv = 'CV actualizado'; // Actualizar según tu API
-        },
-        error: (err) => console.error('Error al subir CV', err)
-      });
+      
+      // Validar que no esté vacío
+      if (file.size === 0) {
+        this.cvError = 'El archivo está vacío';
+        this.selectedFile = null;
+        return;
+      }
+      
+      // Validar que sea PDF
+      if (file.type !== 'application/pdf') {
+        this.cvError = 'El archivo debe ser un PDF';
+        this.selectedFile = null;
+        return;
+      }
+      
+      // Si pasa las validaciones
+      this.cvError = null;
+      this.selectedFile = file;
     }
   }
 
