@@ -4,11 +4,11 @@
     (click)="toggleFiltros()"
     class="w-full flex justify-between items-center p-3 bg-primary text-white rounded-lg"
   >
-    <span class="text-lg font-bold">Filtros</span>
-    <img *ngIf="!abrirFltros; else cerrarFiltros" src="icons/filter.svg" alt="Filtros">
+    <span class="text-base sm:text-lg font-bold">Filtros</span>
+    <img *ngIf="!abrirFltros; else cerrarFiltros" src="icons/filter.svg" alt="Filtros" class="h-5 w-5 sm:h-8 sm:w-8">
 
     <ng-template #cerrarFiltros>
-      <img src="icons/closeWhite.svg" alt="Cerrar Filtros">
+      <img src="icons/closeWhite.svg" alt="Cerrar Filtros" class="h-5 w-5 sm:h-8 sm:w-8">
     </ng-template>
   </button>
 

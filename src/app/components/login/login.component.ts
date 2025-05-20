@@ -16,6 +16,7 @@ export class LoginComponent {
   password: string = '';
   rememberMe: boolean = false;
   errorMessage: string | null = null;
+  showPassword: boolean = false;
 
   constructor(public authState: AuthStateService, private router: Router) {}
 

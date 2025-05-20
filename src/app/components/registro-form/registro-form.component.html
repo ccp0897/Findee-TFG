@@ -23,7 +23,7 @@
       <!-- Nombre -->
       <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
         <img src="icons/user.svg" alt="Nombre de usuario" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
-        <input type="text" placeholder="Nombre de usuario" formControlName="nombre" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+        <input type="text" placeholder="Nombre de usuario" formControlName="nombre" class="w-full outline-none sm:text-xl text-base lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
         <small *ngIf="registroForm.get('nombre')?.errors?.['required'] && formCompletado" 
               class="text-red-500 block text-sm">
           El nombre es obligatorio
@@ -37,7 +37,7 @@
       <!-- Correo -->
       <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
         <img src="icons/mailColor.svg" alt="Correo Electronico" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
-        <input type="email" placeholder="Correo" formControlName="email" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+        <input type="email" placeholder="Correo" formControlName="email" class="w-full outline-none sm:text-xl text-base lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
         <small *ngIf="registroForm.get('email')?.errors?.['required'] && formCompletado" class="text-red-500 text-sm">El email es obligatorio.</small>
         <small *ngIf="registroForm.get('email')?.errors?.['pattern'] && formCompletado" class="text-red-500 block text-sm">Email con estructura incorrecta.</small>
       </div>
@@ -45,7 +45,7 @@
       <!-- Contraseña -->
       <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto relative">
         <img src="icons/password.svg" alt="Contraseña" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
-        <input [type]="showPassword ? 'text' : 'password'" placeholder="Contraseña" formControlName="contrasena" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+        <input [type]="showPassword ? 'text' : 'password'" placeholder="Contraseña" formControlName="contrasena" class="w-full outline-none sm:text-xl text-base lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
         <button 
           type="button" 
           (click)="showPassword = !showPassword" 
@@ -55,7 +55,7 @@
           <img 
             [src]="showPassword ? 'icons/eye-off.svg' : 'icons/eye.svg'" 
             alt="Mostrar/ocultar contraseña" 
-            class="h-5 w-5"
+            class="h-4 w-4 sm:h-8 sm:w-8"
           />
         </button>
         <small *ngIf="registroForm.get('contrasena')?.errors?.['required'] && formCompletado" class="text-red-500 text-sm">La contraseña es obligatoria.</small>
@@ -65,7 +65,7 @@
       <!-- Confirmar Contraseña -->
       <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
         <img src="icons/confirm.svg" alt="Confirmar Contraseña" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
-        <input type="password" placeholder="Confirmar Contraseña" formControlName="confirmarPassword" class="w-full outline-none sm:text-sm text-xl lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
+        <input type="password" placeholder="Confirmar Contraseña" formControlName="confirmarPassword" class="w-full outline-none sm:text-xl text-base lg:text-2xl font-poppins text-black placeholder:text-gray-400" />
         <small *ngIf="registroForm.get('confirmarPassword')?.errors?.['required'] && formCompletado" class="text-red-500 text-sm">La confirmación de contraseña es obligatoria.</small>
         <small *ngIf="contrasenasDiferentes" class="text-red-500 text-sm">Las contraseñas no coinciden.</small>
       </div>
@@ -91,14 +91,14 @@
         </div>
         <div class="flex items-center gap-2">
           <input formControlName="nuevaHabilidad" placeholder="Ej: Angular" class="flex-1 border rounded px-2 py-1 outline-none text-sm placeholder:text-gray-400" />
-          <button type="button" (click)="agregarHabilidad()" class="text-sm font-semibold hover:underline cursor-pointer">+ Añadir</button>
+          <button type="button" (click)="agregarHabilidad()" class="text-xs sm:text-sm font-semibold hover:underline cursor-pointer">+ Añadir</button>
         </div>
       </div>
 
       <!-- CV (PDF) -->
       <div class="flex items-center border rounded px-3 py-2 w-11/12 mx-auto">
         <img src="icons/pdfFile.svg" alt="Agregar CV" class="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
-        <input type="file" accept="application/pdf" (change)="onFileSelected($event)" class="w-full text-sm text-gray-600" />
+        <input type="file" accept="application/pdf" (change)="onFileSelected($event)" class="w-full text-sm text-gray-600" aria-label="Subir Curriculum" />
         <small *ngIf="cvError" class="text-red-500 text-sm mt-1">
           {{ cvError }}
         </small>
@@ -106,7 +106,7 @@
 
       <!-- Botón registrarse -->
        <div class="flex justify-center">
-         <button type="submit" class="w-3/4 bg-primary hover:bg-secondary text-white font-bold py-2 rounded-md transition-all duration-300 transform hover:scale-[1.01] lg:text-3xl font-roboto cursor-pointer" >
+         <button type="submit" class="w-3/4 bg-primary hover:bg-secondary text-white font-bold py-2 rounded-md transition-all duration-300 transform hover:scale-[1.01] text-lg sm:text-xl md:text-2xl lg:text-3xl font-roboto cursor-pointer" >
            Registrarse
          </button>
        </div>

@@ -4,22 +4,22 @@
  <header class="py-3 px-4 md:px-8 bg-white mx-auto flex justify-between items-center">
     <div class="flex items-center space-x-4 w-1/5">
       <!-- Logo más grande pero responsivo -->
-      <img src="images/logo.svg" alt="Findee Logo" class="h-12 sm:h-14 md:h-20 lg:h-24 cursor-pointer" routerLink="/">
+      <img src="images/logo.svg" alt="Findee Logo" class="h-8 sm:h-14 md:h-20 lg:h-24 cursor-pointer" routerLink="/">
     </div>
     <div class="flex items-right justify-between w-4/5">
       <!-- Si el usuario ha iniciado sesión -->
       <div *ngIf="authState.isLoggedIn; else loginButton" class="w-full flex items-center justify-between space-x-4">
         <div class="flex items-center justify-around space-x-4  w-2/3">
-          <a routerLink="/buscarempleo" class=" font-roboto font-bold text-base sm:text-xl md:text-2xl lg:text-3xl text-black hover:text-secondary transition-all duration-300 cursor-pointer">Buscar Empleo</a>
-          <a routerLink="/recomendaciones" class="font-roboto font-bold text-base sm:text-xl md:text-2xl lg:text-3xl text-black hover:text-secondary transition-all duration-300 cursor-pointer">Recomendaciones</a>
+          <a routerLink="/buscarempleo" class=" font-roboto font-bold text-sm sm:text-xl md:text-2xl lg:text-3xl text-black hover:text-secondary transition-all duration-300 cursor-pointer">Buscar Empleo</a>
+          <a routerLink="/recomendaciones" class="font-roboto font-bold text-sm sm:text-xl md:text-2xl lg:text-3xl text-black hover:text-secondary transition-all duration-300 cursor-pointer">Recomendaciones</a>
         </div>
-        <div class="w-1/3 flex items-center justify-end gap-2 ">
+        <div class="w-1/3 flex items-center justify-end gap-2">
           <div class="flex items-center space-x-2 cursor-pointer" routerLink="/perfilUsuario">
             <img src="icons/user.svg" alt="Perfil de usuario" class="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8">
-            <p class="text-base sm:text-xl md:text-2xl lg:text-3xl text-black text-left  overflow-hidden font-roboto font-bold">{{authState.nombre}}</p>
+            <p class="hidden sm:block text-base sm:text-xl md:text-2xl lg:text-3xl text-black text-left  overflow-hidden font-roboto font-bold">{{authState.nombre}}</p>
           </div>
-          <button (click)="logout()" class=" px-5 py-2.5 rounded-md transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer align-middle hover:bg-background-alt">
-            <img src="icons/exit.svg" alt="Cerrar sesión" class="h-6 w-6">
+          <button (click)="logout()" class=" py-2.5 rounded-md transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer align-middle hover:bg-background-alt">
+            <img src="icons/exit.svg" alt="Cerrar sesión" class="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8">
           </button>
         </div>
       </div>
