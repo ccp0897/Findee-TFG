@@ -1,0 +1,27 @@
+<div *ngIf="loading">Cargando recomendaciones...</div>
+
+<div *ngFor="let rec of recomendaciones" class="recomendacion-card">
+  <h3>{{ rec.title }} - {{ rec.companyName }}</h3>
+  <p>{{ rec.city }} | {{ rec.contractType }}</p>
+  
+  <div class="match-score">
+    Compatibilidad: {{ rec.matchScore }}%
+    <div class="progress-bar">
+      <div [style.width.%]="rec.matchScore"></div>
+    </div>
+  </div>
+  
+  <h4>Razones de compatibilidad:</h4>
+  <ul>
+    <li *ngFor="let reason of rec.matchReasons">{{ reason }}</li>
+  </ul>
+  
+  <div *ngIf="rec.missingSkills.length">
+    <h4>Habilidades a mejorar:</h4>
+    <ul>
+      <li *ngFor="let skill of rec.missingSkills">{{ skill }}</li>
+    </ul>
+  </div>
+  
+  <p class="ai-analysis">{{ rec.aiAnalysis }}</p>
+</div>
