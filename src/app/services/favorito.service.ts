@@ -14,6 +14,8 @@ export class FavoritoService {
 
 
 
+  //Creacion de las cabeceras de autenticación
+  //para las peticiones HTTP, utilizando el token almacenado en el servicio de autenticación
   private getAuthHeaders(): { headers: HttpHeaders } {
     const token = this.authState.getToken();
     if (!token) {

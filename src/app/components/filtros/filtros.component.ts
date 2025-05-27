@@ -117,12 +117,7 @@ export class FiltrosComponent implements OnInit{
       this.resetearCiudad();
     }
   }
-  //Método para limpiar la selección de ciudad
-  limpiarCiudad(): void {
-    this.formFiltros.get('ciudad')?.setValue('');
-    this.ciudadesFiltradas = this.opcionesFiltro.ciudad || [];
-    this.emitirFiltros();
-  }
+
 
   //Funcion para manejar el cambio de los checkbox, es decir, escucha los cambios en los checkbox y emite el evento con los filtros seleccionados
   // Se le pasa como parametro el evento y el campo que se esta cambiando

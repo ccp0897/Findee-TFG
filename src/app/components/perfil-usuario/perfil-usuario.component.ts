@@ -109,6 +109,7 @@ export class PerfilUsuarioComponent {
         ? updatedData.habilidades.split(',').map((h: string) => h.trim()).filter((h: string) => h)
         : [];
       
+      //Suscribirse al servicio de usuario para actualizar los datos
       this.usuarioService.actualizarUsuario(this.usuario.id, updatedData).subscribe({
         next: (response) => {
           this.usuario = { 
@@ -123,7 +124,9 @@ export class PerfilUsuarioComponent {
         },
         error: (err) => console.error('Error al actualizar usuario', err)
       });
+      //Si se ha modificado el CV, llamar al servicio para actualizarlo
       if (this.selectedFile && !this.cvError) {
+        //Suscribirse al servicio de usuario para actualizar el CV
         this.usuarioService.actualizarCV(this.usuario.id, this.selectedFile).subscribe({
           next: () => {
             console.log('CV actualizado con éxito');
@@ -191,6 +194,7 @@ loadMore() {
     }
   }
 
+  // Método para eliminar un empleo de favoritos
   eliminarDeFavoritos(empleoId: number) {
     console.log('Eliminando empleo de favoritos:', empleoId);
     // Filtrar los empleos para quitar el eliminado
@@ -199,6 +203,7 @@ loadMore() {
     
     // Resetear la paginación
     this.currentPage = 0;
+    this.displayedFavoritos = [];
     this.loadMore();
   }
 

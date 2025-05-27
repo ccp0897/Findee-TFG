@@ -12,14 +12,21 @@ import { AuthStateService } from '../../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  // Variables para el formulario de inicio de sesión
   email: string = '';
   password: string = '';
+
+  // Variable para recordar la sesión
   rememberMe: boolean = false;
+  // Variable para manejar errores
   errorMessage: string | null = null;
+  // Variable para mostrar/ocultar la contraseña
   showPassword: boolean = false;
 
+  //Constructor que inyecta el servicio de autenticación y el router
   constructor(public authState: AuthStateService, private router: Router) {}
 
+  // Método para realizar el inicio de sesión suscribiéndose al servicio de autenticación
   onSubmit() {
     this.authState.login(this.email, this.password).subscribe({
       next: () => {

@@ -60,7 +60,7 @@ export class EmpleosListaComponent {
 
   //Método para manejar el paginado, es decir, el numero de botones que apareceran en la paginación para evitar que se generen todos los botones en caso de que haya muchos empleos
   getVisiblePages(): number[] {
-    const visiblePages = 3; // Cambia este número si quieres más botones visibles
+    const visiblePages = 3; // Número de botones visibles en la paginación
     const pages: number[] = [];
 
     if (this.totalPages <= visiblePages + 1) {

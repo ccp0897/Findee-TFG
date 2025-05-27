@@ -18,6 +18,7 @@ export class HeaderComponent {
     this.router.navigate(['/login']);
   }
 
+  //Función para cerrar sesión
   logout() {
     this.authState.logout();
     this.router.navigate(['/login']);

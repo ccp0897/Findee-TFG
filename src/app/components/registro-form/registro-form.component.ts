@@ -22,6 +22,8 @@ export class RegistroFormComponent {
   contrasenasDiferentes = false;
   showPassword = false;
 
+  //Constructor que inyecta el FormBuilder, Router y AuthStateService
+  // Inicializamos el formulario con sus campos y validaciones
   constructor(private formBuilder: FormBuilder, private router: Router, private authState: AuthStateService) {
     this.registroForm = this.formBuilder.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
@@ -51,6 +53,8 @@ export class RegistroFormComponent {
     this.habilidades = this.habilidades.filter(h => h !== habilidad);
   }
 
+  //Funcion que obtiene el fichero cuando es seleccionado
+  // y valida que sea un PDF y no esté vacío
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files?.length) {
@@ -79,9 +83,8 @@ export class RegistroFormComponent {
     }
   }
 
-  //Cuando se envia el folumlario, lo primero es comprobar si el formulario es válido
- 
-  onSubmit() {
+  //Cuando se envia el folumlario, lo primero es comprobar si el formulario es válido, hay un archivo seleccionado y no hay errores de CV
+   onSubmit() {
     this.formCompletado = true;
     if (this.registroForm.valid && this.cvFile && !this.cvError) {
       //Validar que las contraseñas sean iguales

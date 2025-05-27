@@ -65,7 +65,7 @@ export class AuthStateService {
   registarUsuario(usuario: any, cvFile: File): Observable<any> {
   const formData = new FormData();
   
-  // Asegúrate de que el objeto usuario no contenga campos undefined
+  //Objeto usuario limpio, sin campos innecesarios
   const usuarioClean = {
     nombre: usuario.nombre,
     email: usuario.email,
@@ -74,6 +74,7 @@ export class AuthStateService {
     habilidades: usuario.habilidades
   };
 
+  //Añadir los campos al FormData que será enviado a la API
   formData.append('usuario', JSON.stringify(usuarioClean));
   formData.append('cvFile', cvFile, cvFile.name);
 
