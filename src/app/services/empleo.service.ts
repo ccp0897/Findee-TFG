@@ -8,7 +8,7 @@ import Empleo from '../models/Empleo';
   providedIn: 'root'
 })
 export class EmpleoService {
-  private apiUrl = "http://localhost:8080/api/findee";
+  private apiUrl = "https://findeebackend.onrender.com/api/findee";
 
   constructor(private http: HttpClient) { }
 

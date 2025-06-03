@@ -9,7 +9,7 @@ import Empleo from '../models/Empleo';
 })
 export class FavoritoService {
 
-  private apiUrl ="http://localhost:8080/api/findee/favoritos";
+  private apiUrl ="https://findeebackend.onrender.com/api/findee/favoritos";
   constructor(private http: HttpClient, private authState: AuthStateService) { }
 
 

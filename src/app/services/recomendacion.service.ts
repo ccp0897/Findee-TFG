@@ -9,7 +9,7 @@ import { AuthStateService } from './auth.service';
 })
 export class RecomendacionService {
 
-  private apiUrl="http://localhost:8080/api/recomendaciones";
+  private apiUrl="https://findeebackend.onrender.com/api/recomendaciones";
 
   constructor(private http: HttpClient, private authState: AuthStateService) { }
 

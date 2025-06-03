@@ -7,7 +7,7 @@ import { AuthStateService } from './auth.service';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = 'http://localhost:8080/api/findee/usuario';
+  private apiUrl = 'https://findeebackend.onrender.com/api/findee/usuario';
 
   constructor(private http: HttpClient, private authState: AuthStateService) { }
 

@@ -17,7 +17,7 @@ export class AuthStateService {
   //Comienzo del uso de la API
 
   //URL de la API
-  private apiAuthUrl = "http://localhost:8080/api/auth/";
+  private apiAuthUrl = "https://findeebackend.onrender.com/api/auth/";
 
   constructor(private http: HttpClient) { }
 
